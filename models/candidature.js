@@ -5,7 +5,7 @@ const candidatureSchema = new Schema(
   {
     candidat: { type: SchemaTypes.ObjectId, ref: "Candidat", required: true },
     cv: { type: binData, required: true },
-    offre: { type: SchemaTypes.ObjectId, ref: "Offer", required: true },
+    offre: { type: SchemaTypes.ObjectId, ref: "Job", required: true },
     sexe: {
       type: String,
       enum: ["pending", "accepted", "rejected"],

@@ -1,7 +1,7 @@
 import mongoose, { SchemaType, SchemaTypes } from 'mongoose';
 const { Schema, model } = mongoose;
 
-const offer = new Schema({
+const job = new Schema({
   recruteur:{type:SchemaTypes.ObjectId,
     ref:'Recruteur',
 required:true},
@@ -10,5 +10,5 @@ required:true},
   
 },{timestamps:true});
 
-const Offer = model('Offer', offer);
-export default Offer;
+const Job = model('Job', job);
+export default Job;
