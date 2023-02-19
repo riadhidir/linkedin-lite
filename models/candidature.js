@@ -1,9 +1,9 @@
-import mongoose, { SchemaType, SchemaTypes } from "mongoose";
+import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 
-const condidatureSchema = new Schema(
+const candidatureSchema = new Schema(
   {
-    condida: { type: SchemaTypes.ObjectId, ref: "Condidat", required: true },
+    candidat: { type: SchemaTypes.ObjectId, ref: "Candidat", required: true },
     cv: { type: binData, required: true },
     offre: { type: SchemaTypes.ObjectId, ref: "Offer", required: true },
     sexe: {
@@ -15,5 +15,5 @@ const condidatureSchema = new Schema(
   { timestamps: true }
 );
 
-const Condidature = model("Condidature", condidatureSchema);
-export default Condidature;
+const Candidature = model("Candidature", candidatureSchema);
+export default Candidature;

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 const { Schema, model } = mongoose;
 
-const condidatSchema = new Schema({
+const candidatSchema = new Schema({
   user:{type:String,
 required:true},
   password: {type:String,
@@ -23,5 +23,5 @@ required:true},
   },
 },{timestamps:true});
 
-const Condidat = model('Condidat', condidatSchema);
-export default Condidat;
+const Candidat = model('Candidat', candidatSchema);
+export default Candidat;
