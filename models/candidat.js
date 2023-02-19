@@ -16,7 +16,11 @@ required:true},
     required:true},
   adresse: {type:String,
     required:true},
-  sexe: ['male','famme'],
+  sex:{
+    type: String,
+    enum: ['male', 'female'],
+    required: true
+  },
 },{timestamps:true});
 
 const Condidat = model('Condidat', condidat);
