@@ -1,6 +1,6 @@
 import Job from '../models/Job.js';
 import Recruteur from '../models/Recruteur.js'
-
+import { getUserId } from '../utilities/userUtilities.js';
 export const addJob=async(req,res)=>{
     
     try{
@@ -56,3 +56,17 @@ export const updateJobById = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+// *
+export const getAllJobs = async(req,res)=>{
+  const jobs = await Job.find();
+  res.json(jobs);
+}
+
+// *
+export const getMyJobs = async(req,res)=>{
+  const recruteur = getUserId(req); 
+  const jobs = await Job.find({recruteur});
+  res.json(jobs);
+
+}

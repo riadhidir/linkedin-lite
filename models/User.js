@@ -3,6 +3,7 @@ const { Schema, model } = mongoose;
 const options = {
     discriminatorKey : 'role',
     timestamps:true 
+    
 }
 const userSchema = new Schema({
     username:{

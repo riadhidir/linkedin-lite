@@ -5,9 +5,11 @@ import bodyparser from 'body-parser';
 // import { createTokens , validateToken,candidat} from './jwt.js';
 mongoose.set('strictQuery', false);
 import { registerCandidat } from './controllers/candidatController.js';
+import { getCandidature ,editCandidature, addCandidature} from './controllers/candidatureController.js';
 import { registerRecruteur } from './controllers/recruteurController.js';
 import { Login } from './controllers/UserController.js';
-import {validateToken,auth} from './middlewares/auth.js';
+import {auth} from './middlewares/auth.js';
+import { getAllJobs,getMyJobs } from './controllers/JobController.js';
 const app = express();
 // app.use(express.urlencoded({extended: true}));
 app.use(bodyparser.urlencoded({extended:true}))
@@ -19,48 +21,26 @@ app.listen(3000, ()=>{console.log('http://localhost:3000')});
 });
 
 
-// app.post('/admin/register',async (req,res)=>{
-//     const {candidat,
-//         cv,
-//         job
-//         } = req.query
-//     const admin = await Candidature.create({
-//         candidat,
-//         cv,
-// job
-//     }) 
-    
-    
-   
-// res.json(admin);
-// });
 
-// app.post('/login', async (req,res)=>{
-//     const {username, password} = req.query;
-//     const user = await User.findOne({username:username}).exec();
-//     if(!user) res.status(400).json({error:"user doesnt exists"})
-//     const dbPassowrd = user.password;
-//     if(password != dbPassowrd){
-//      res.status(400).json({error:"wrong username and password combination "})
-
-//     }else{
-//         const accessToken = createTokens(user);
-//         res.cookie('access-token',accessToken,{ httpOnly:true})
-//         res.json("logged in");
-//     }
-
-// });
-// app.get('/profile',validateToken,(req,res)=>{
-//     res.json('profile');
-
-// })
-// app.get('/onlycandidat', candidat, (req,res)=>{
-//     res.json('authorized')
-// })
+    // login for all users
 app.post('/login',Login);
-app.post('/candidat', registerCandidat); 
-app.post('/recruteur', registerRecruteur);
+// register routs
+app.post('/candidats/register', registerCandidat); 
+app.post('/recruteur/register', registerRecruteur);
 
-app.get('/profile',auth(['Recruteur']),(req,res)=>{
+//get a specific 'candidature' | roles : [recruteur]
+app.get('/candidatures/:id',auth(['Recruteur']), getCandidature);
+//edit a specific 'candidature's state | roles : [recruteur]
+app.post('/candidatures/:id/edit',auth(['Recruteur']), editCandidature);
+//edit all jobs available | roles : [recruteur, candidat]
+app.get('/jobs',auth(['Recruteur', 'Candidat']),getAllJobs);
+//edit all jobs intoduced by a recruiter | roles : [recruteur]
+app.get('/recruteur/jobs',auth(['Recruteur']),getMyJobs);
+
+//add a 'candidature' | roles : [candidat]
+app.post('/jobs/:id/apply',auth(['Candidat']), addCandidature);
+
+// ignore this for now :)
+app.get('/profile',auth(['Recruteur','Admin', 'Candidat']),(req,res)=>{
     res.json('profile')
 })
