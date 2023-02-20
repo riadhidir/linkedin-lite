@@ -6,10 +6,10 @@ import User from './models/User.js';
 import Admin from './models/Admin.js';
 
 import Recruteur from './models/Recruteur.js';
-import adminController from './controllers/adminController';
+import {addCategorie} from './controllers/CategorieController.js';
 const app = express();
 
-app.get('/',adminController.ajouteradmin)
+app.post('/',addCategorie);
 app.use(express.json());
 app.use(cookieParser());
 mongoose.connect("mongodb+srv://riadhidir5:bIKlHStd0ezgzaFQ@cluster0.aha4g2i.mongodb.net/Cluster0?retryWrites=true&w=majority").then(()=>{
