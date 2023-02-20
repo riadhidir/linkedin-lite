@@ -1,21 +1,12 @@
 import mongoose from 'mongoose';
-const { Schema, model } = mongoose;
+import User from './User.js';
+
+const { Schema, SchemaTypes,model } = mongoose;
 const adminSchema = new Schema({
-    user:{
-        type:String,
-        required:true,
+    
 
-    },
-    password:{
-        type:String,
-        required:true
-    },
   
-    email:{
-        type:String,
-        required:true
-    }
-},{timestamps:true});
+});
 
-const Admin = model('Admin', adminSchema);
+const Admin = User.discriminator('Admin', adminSchema);
 export default Admin;

@@ -1,22 +1,18 @@
 import mongoose from 'mongoose';
-const { Schema, model } = mongoose;
+import User from './User.js';
+const { Schema,SchemaTypes, model } = mongoose;
 
 const recruteurSchema = new Schema({
-user:{type:String,required:true},
-
-password:{type:String,required:true},
-
 nom:{
-    type:String,required:true},
-email:{
     type:String,required:true},
 phone:{
     type:String,
     minKey:5,required:true},
 adresse:{
-    type:String,required:true}
+    type:String,required:true},
+    
 
-},{timestamps:true});
+});
 
-const Recruteur = new model('Recruteur', recruteurSchema);
+const Recruteur = User.discriminator('Recruteur', recruteurSchema);
 export default Recruteur;
