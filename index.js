@@ -6,10 +6,10 @@ import User from './models/User.js';
 import Admin from './models/Admin.js';
 
 import Recruteur from './models/Recruteur.js';
-import adminController from './controllers/adminController';
-const app = express();
 
-app.get('/',adminController.ajouteradmin)
+const app = express();
+import {addJob, deleteJob, getJobById, updateJobById} from './controllers/offerController.js';
+
 app.use(express.json());
 app.use(cookieParser());
 mongoose.connect("mongodb+srv://riadhidir5:bIKlHStd0ezgzaFQ@cluster0.aha4g2i.mongodb.net/Cluster0?retryWrites=true&w=majority").then(()=>{
@@ -60,4 +60,9 @@ app.get('/onlycandidat', candidat, (req,res)=>{
 // app.use(express.static('public'));
 
 // app.use(express.urlencoded({extended: true}));
+
+app.post('/jobs',addJob);
+app.delete('/jobs/:id', deleteJob);
+app.get('/jobs/:id', getJobById);
+app.put('/jobs/:id', updateJobById);
 

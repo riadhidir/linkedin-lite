@@ -5,7 +5,7 @@ const job = new Schema({
   recruteur:{type:SchemaTypes.ObjectId,
     ref:'Recruteur',
 required:true},
-  description: {type:sting,
+  description: {type:String,
     required:true},
   
 },{timestamps:true});
