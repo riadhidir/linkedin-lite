@@ -4,9 +4,9 @@ const { Schema,SchemaTypes, model } = mongoose;
 const candidatureSchema = new Schema(
   {
     candidat: { type: SchemaTypes.ObjectId, ref: "Candidat", required: true },
-    cv: { type: binData, required: true },
-    offre: { type: SchemaTypes.ObjectId, ref: "Job", required: true },
-    sexe: {
+    cv: { type: Buffer, required: true },
+    job: { type: SchemaTypes.ObjectId, ref: "Job", required: true },
+    etat: {
       type: String,
       enum: ["pending", "accepted", "rejected"],
       default: "pending",
