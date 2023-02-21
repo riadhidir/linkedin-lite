@@ -9,7 +9,7 @@ export  const addCategorie  =async(req,res)=>{
     res.json('categorie ajouté')
 }
 //  get /categories/:id
-export const getCategorie =(req,res)=>{
+export const getAllCategories =(req,res)=>{
     const categorie = Categorie.find().then((result)=>{
         res.json(result); 
     })
