@@ -1,8 +1,12 @@
 import  express   from 'express';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
+import { createTokens , validateToken,candidat} from './jwt.js';
+
+import {addCategorie, deleteCategorie,editCategorie,getAllCategories} from './controllers/CategorieController.js';
+const app = express();
+app.use(express.json());
 import bodyparser from 'body-parser';
-// import { createTokens , validateToken,candidat} from './jwt.js';
 mongoose.set('strictQuery', false);
 import { registerCandidat } from './controllers/candidatController.js';
 import { getCandidature ,editCandidature, addCandidature} from './controllers/candidatureController.js';
@@ -10,7 +14,7 @@ import { registerRecruteur } from './controllers/recruteurController.js';
 import { Login } from './controllers/UserController.js';
 import {auth} from './middlewares/auth.js';
 import { getAllJobs,getMyJobs,addJob,deleteJob, getJobById, updateJobById } from './controllers/JobController.js';
-const app = express();
+
 // app.use(express.urlencoded({extended: true}));
 app.use(bodyparser.urlencoded({extended:true}))
 app.use(bodyparser.json())
@@ -22,6 +26,10 @@ app.listen(3000, ()=>{console.log('http://localhost:3000')});
 app.use(express.urlencoded({extended:true}));
 
 
+app.post('/categories',auth(['Admin']),addCategorie);
+app.get('/categories',auth(['Admin']),getAllCategories);
+app.delete('/categories/:id',auth(['Admin']),deleteCategorie);
+app.put('/categories/:id',editCategorie);
     // login for all users
 app.post('/login',Login);
 // register routs
