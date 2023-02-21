@@ -21,6 +21,7 @@ export const deleteCategorie = async (req,res)=>{
     res.json("deleted")
 }
 export const editCategorie = async (req,res)=>{
+
    const categorie =  await Categorie.findByIdAndUpdate(req.params.id,{titre:req.body.titre});
 
     res.json("updated")

@@ -2,15 +2,11 @@ import  express   from 'express';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import { createTokens , validateToken,candidat} from './jwt.js';
-import User from './models/User.js';
-import Admin from './models/Admin.js';
 
-import Recruteur from './models/Recruteur.js';
 import {addCategorie, deleteCategorie,editCategorie,getAllCategories} from './controllers/CategorieController.js';
 const app = express();
-
+app.use(express.json());
 import bodyparser from 'body-parser';
-// import { createTokens , validateToken,candidat} from './jwt.js';
 mongoose.set('strictQuery', false);
 import { registerCandidat } from './controllers/candidatController.js';
 import { getCandidature ,editCandidature, addCandidature} from './controllers/candidatureController.js';
@@ -28,7 +24,7 @@ app.listen(3000, ()=>{console.log('http://localhost:3000')});
 app.post('/categories',auth(['Admin']),addCategorie);
 app.get('/categories',auth(['Admin']),getAllCategories);
 app.delete('/categories/:id',auth(['Admin']),deleteCategorie);
-app.put('/categories/:id',auth(['Admin']),editCategorie);
+app.put('/categories/:id',editCategorie);
     // login for all users
 app.post('/login',Login);
 // register routs
