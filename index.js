@@ -1,35 +1,49 @@
 import  express   from 'express';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
-import { createTokens , validateToken,candidat} from './jwt.js';
-
-import {addCategorie, deleteCategorie,editCategorie,getAllCategories} from './controllers/CategorieController.js';
-const app = express();
-app.use(express.json());
 import bodyparser from 'body-parser';
-mongoose.set('strictQuery', false);
+import {addCategorie, deleteCategorie,editCategorie,getAllCategories} from './controllers/CategorieController.js';
 import { registerCandidat } from './controllers/candidatController.js';
-import { getCandidature ,editCandidature, addCandidature} from './controllers/candidatureController.js';
+import { getCandidature ,editCandidature, addCandidature, editCandidatureState} from './controllers/candidatureController.js';
 import { registerRecruteur } from './controllers/recruteurController.js';
 import { Login } from './controllers/UserController.js';
 import {auth} from './middlewares/auth.js';
 import { getAllJobs,getMyJobs,addJob,deleteJob, getJobById, updateJobById } from './controllers/JobController.js';
 
-// app.use(express.urlencoded({extended: true}));
-app.use(bodyparser.urlencoded({extended:true}))
-app.use(bodyparser.json())
+
+import multer from 'multer';
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './public')
+    },
+    filename: function (req, file, cb) {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+      cb(null, file.fieldname + '-' + uniqueSuffix+".pdf")
+    },
+  });
+const upload = multer({ storage: storage });
+const app = express();
 app.use(express.json());
+app.use(express.urlencoded({extended:true}));
+app.use(express.static('public'))
+mongoose.set('strictQuery', false);
+
+
+// app.use(bodyparser.urlencoded({extended:true}))
+// app.use(bodyparser.json())
+
 app.use(cookieParser());
+
 mongoose.connect("mongodb+srv://riadhidir5:bIKlHStd0ezgzaFQ@cluster0.aha4g2i.mongodb.net/Cluster0?retryWrites=true&w=majority").then(()=>{
 app.listen(3000, ()=>{console.log('http://localhost:3000')});
 });
-app.use(express.urlencoded({extended:true}));
+
 
 
 app.post('/categories',auth(['Admin']),addCategorie);
 app.get('/categories',auth(['Admin']),getAllCategories);
 app.delete('/categories/:id',auth(['Admin']),deleteCategorie);
-app.put('/categories/:id',editCategorie);
+app.put('/categories/:id',auth(['Admin']),editCategorie);
     // login for all users
 app.post('/login',Login);
 // register routs
@@ -39,14 +53,16 @@ app.post('/recruteur/register', registerRecruteur);
 //get a specific 'candidature' | roles : [recruteur]
 app.get('/candidatures/:id',auth(['Recruteur']), getCandidature);
 //edit a specific 'candidature's state | roles : [recruteur]
-app.post('/candidatures/:id/edit',auth(['Recruteur']), editCandidature);
+app.post('/recruteurs/candidatures/:id/edit',auth(['Recruteur']), editCandidatureState);
+app.post('/candidatures/:id/edit',[auth(['Candidat']),upload.single('cv')], editCandidature);
+
 //edit all jobs available | roles : [recruteur, candidat]
 app.get('/jobs',auth(['Recruteur', 'Candidat']),getAllJobs);
 //edit all jobs intoduced by a recruiter | roles : [recruteur]
 app.get('/recruteur/jobs',auth(['Recruteur']),getMyJobs);
 
 //add a 'candidature' | roles : [candidat]
-app.post('/jobs/:id/apply',auth(['Candidat']), addCandidature);
+app.post('/jobs/:id/apply',[auth(['Candidat']), upload.single('cv')], addCandidature);
 
 // ignore this for now :)
 app.get('/profile',auth(['Recruteur','Admin', 'Candidat']),(req,res)=>{
