@@ -1,8 +1,8 @@
 import Categorie from "../models/Categorie.js"
 
 
-export  const addCategorie  =(req,res)=>{
-    const categorie = Categorie.create({
+export  const addCategorie  = async (req,res)=>{
+    const categorie = await Categorie.create({
         titre:req.query.titre
     });
 
