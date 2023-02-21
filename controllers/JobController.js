@@ -1,10 +1,10 @@
 import Job from '../models/Job.js';
 import Recruteur from '../models/Recruteur.js'
 import { getUserId } from '../utilities/userUtilities.js';
+
 export const addJob=async(req,res)=>{
-    
-    try{
-      const newJob=await Job.create ({recruteur:req.query.recruteur,description:req.query.description}); 
+    try{  
+      const newJob=await Job.create ({recruteur:getUserId(req),description:req.body.description}); 
  res.status(201).json(newJob);
     }catch(err){
     res.status(400).json({error:err.message});
@@ -13,16 +13,15 @@ export const addJob=async(req,res)=>{
     
 
 export const deleteJob = async (req, res) => {
-  try {
-    const result = await Job.deleteOne({ _id: req.params.id });
-    if (result.deletedCount === 1) {
+
+    const result = await Job.findByIdAndDelete(req.params.id).then((result)=>{
+      if(!result)  res.status(400).json({ message: ' Job not found' });
       res.status(200).json({ message: 'Job deleted successfully' });
-    } else {
-      res.status(404).json({ error: 'Job not found' });
-    }
-  } catch (err) {
+    }).catch((err)=>{
     res.status(500).json({ error: err.message });
-  }
+    });
+
+    
 };
 
 
@@ -45,7 +44,7 @@ export const updateJobById = async (req, res) => {
     const updatedJob = await Job.findByIdAndUpdate(
       req.params.id,
       { description: req.body.description },
-      { new: true }
+     
     );
     if (updatedJob) {
       res.status(200).json(updatedJob);
