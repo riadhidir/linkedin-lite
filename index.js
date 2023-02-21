@@ -1,6 +1,14 @@
 import  express   from 'express';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
+import { createTokens , validateToken,candidat} from './jwt.js';
+import User from './models/User.js';
+import Admin from './models/Admin.js';
+
+import Recruteur from './models/Recruteur.js';
+import {addCategorie, deleteCategorie,editCategorie,getAllCategories} from './controllers/CategorieController.js';
+const app = express();
+
 import bodyparser from 'body-parser';
 // import { createTokens , validateToken,candidat} from './jwt.js';
 mongoose.set('strictQuery', false);
@@ -10,18 +18,17 @@ import { registerRecruteur } from './controllers/recruteurController.js';
 import { Login } from './controllers/UserController.js';
 import {auth} from './middlewares/auth.js';
 import { getAllJobs,getMyJobs } from './controllers/JobController.js';
-const app = express();
-// app.use(express.urlencoded({extended: true}));
-app.use(bodyparser.urlencoded({extended:true}))
-app.use(bodyparser.json())
-app.use(express.json());
-app.use(cookieParser());
+
 mongoose.connect("mongodb+srv://riadhidir5:bIKlHStd0ezgzaFQ@cluster0.aha4g2i.mongodb.net/Cluster0?retryWrites=true&w=majority").then(()=>{
 app.listen(3000, ()=>{console.log('http://localhost:3000')});
 });
 
 
 
+app.post('/categories',auth(['Admin']),addCategorie);
+app.get('/categories',auth(['Admin']),getAllCategories);
+app.delete('/categories/:id',auth(['Admin']),deleteCategorie);
+app.put('/categories/:id',auth(['Admin']),editCategorie);
     // login for all users
 app.post('/login',Login);
 // register routs
