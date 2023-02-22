@@ -70,7 +70,7 @@ app.get('/profile',auth(['Recruteur','Admin', 'Candidat']),(req,res)=>{
 })
 
 app.post('/jobs', auth(['Recruteur']),addJob);
-app.post('/jobs/:id', auth(['Recruteur']),deleteJob);
+app.delete('/jobs/:id', auth(['Recruteur']),deleteJob);
 app.get('/jobs/:id', auth(['Recruteur']),getJobById);
 app.put('/jobs/:id', auth(['Recruteur']),updateJobById);
 
