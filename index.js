@@ -40,7 +40,7 @@ app.listen(3000, ()=>{console.log('http://localhost:3000')});
 
 
 
-app.post('/categories',auth(['Admin']),addCategorie);
+app.post('/categories',auth(['Admin']),(addCategorie));
 app.get('/categories',auth(['Admin']),getAllCategories);
 app.delete('/categories/:id',auth(['Admin']),deleteCategorie);
 app.put('/categories/:id',auth(['Admin']),editCategorie);

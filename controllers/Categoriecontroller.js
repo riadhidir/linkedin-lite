@@ -3,7 +3,7 @@ import Categorie from "../models/Categorie.js"
 // post /categories/create
 export  const addCategorie  =async(req,res)=>{
     const categorie = await Categorie.create({
-        titre:req.query.titre
+        titre:req.body.titre
     });
 
     res.json('categorie ajouté')
