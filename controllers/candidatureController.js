@@ -1,16 +1,11 @@
 import Candidature from '../models/Candidature.js';
-// import Admin from '../models/Candidature.js';
-import Job from '../models/Job.js';
 import fs from 'fs';
-
 import { getUserId } from '../utilities/userUtilities.js';
-import Candidat from '../models/candidat.js';
 
 
 export const getCandidature = async(req,res)=>{
     const candidature = await Candidature.findById(req.params.id).exec();
     const {job,candidat,_id,etat} = candidature;
-    // const f = ".file:///C:/Users/pc/Desktop/linkedin-lite/public/cv-1676988759473-83815496.pdf";
     res.json({cv: "../"+candidature.cv,
     job,candidat,_id,etat});
 }
@@ -30,10 +25,6 @@ export const editCandidature = async(req,res)=>{
     });
     res.json('application updated successfully!');
 }
-// /jobs/:id
-// export const getAllCandidature = async (req,res)=>{
-//     const candidature = await Candidature.find().populate('jobs').populate('users')
-// } 
 
 export const addCandidature = async (req,res)=>{
     const candidat = getUserId(req);
@@ -44,9 +35,4 @@ export const addCandidature = async (req,res)=>{
     });  
     res.json("applied Successfully");
 }
-
-// export const DeleteCandidatures = async (req, res)=>{
-// const job = await Job.deleteOne({_id:res.params.id});
-// res.json('condidature supprimé');
-// }
 
