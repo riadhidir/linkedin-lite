@@ -29,10 +29,10 @@ export const editCandidature = async(req,res)=>{
 export const addCandidature = async (req,res)=>{
     const candidat = getUserId(req);
     const cv = req.file.filename;
-    await Candidature.create({
+    const candidature=await Candidature.create({
         candidat, cv
         ,job:req.params.id
     });  
-    res.json("applied Successfully");
+    res.json(candidature);
 }
 

@@ -6,9 +6,9 @@ export  const addCategorie  =async(req,res)=>{
         titre:req.body.titre
     });
 
-    res.json('categorie ajouté')
+    res.json(categorie)
 }
-//  get /categories/:id
+//  get all categories
 export const getAllCategories =(req,res)=>{
     const categorie = Categorie.find().then((result)=>{
         res.json(result); 
@@ -26,3 +26,17 @@ export const editCategorie = async (req,res)=>{
 
     res.json("updated")
 }
+
+//get categorie by id 
+export const getCategorieById = async (req, res) => {
+  try {
+    const categorie = await Categorie.findById(req.params.id);
+    if (categorie) {
+      res.status(200).json(categorie);
+    } else {
+      res.status(404).json({ error: 'Categorie not found' });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

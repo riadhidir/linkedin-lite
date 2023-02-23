@@ -15,5 +15,5 @@ const storage = multer.diskStorage({
   });
 const upload = multer({ storage: storage });
 //get a specific 'candidature' | roles : [recruteur]
-candidatureRouter.get('/:id',auth(['Recruteur']), getCandidature);
+candidatureRouter.get('/:id',auth(['Recruteur','Candidat']), getCandidature);
 candidatureRouter.put('/:id/edit',[auth(['Candidat']),upload.single('cv')], editCandidature);
